@@ -37,7 +37,6 @@ void training(){
     int dMin = 0;
 
     do{
-        iteration+=1;
 
         for(int vecNum = 0; vecNum <= (vectors - 1); vecNum++){
 
@@ -54,16 +53,38 @@ void training(){
                 w[dMin][i] = w[dMin][i] + (alpha * (pattern[vecNum][i] - w[dMin][i]));
                 cout<<"w("<<i<<")="<<w[0][i]<<"\n"<<endl;
                 cout<<"w("<<i<<")="<<w[1][i]<<"\n"<<endl;
+
+
             }
+            iteration++;
         }
         //reduce the learning rate.
         alpha = decayRate * alpha;
-    } while(alpha > 0.504+0.024);  //4 iter = 0.096 (minAlpha = 0.504)
+    } while(alpha > 0.528);  //4 iter = 0.096 (minAlpha = 0.504)
     cout<<"Iteration: "<<iteration<<"\n\n";
 }
 
 void testing(){
     int dMin;
+
+    //print clusters created
+    cout<<"Clusters for training input:"<<endl;
+
+    for(int vecNum = 0; vecNum<= (vectors-1);vecNum++){
+        //computeWeight
+        computeWight(vecNum);
+
+        //see which is smaller
+        dMin = minimum(d[0],d[1]);
+
+        cout<<"\nVector(";
+        for(int i = 0;i<=(vectors-1);i++){
+            cout<<pattern[vecNum][i]<<",";
+
+        }
+        cout<<") fits into category " <<dMin<<endl;
+
+    }
 
 }
 
