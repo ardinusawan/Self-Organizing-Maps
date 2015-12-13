@@ -8,7 +8,7 @@ const int maxCluster = 2; //n
 const int vectors = 4; // m
 const int vecLen = 4;
 const double decayRate = 0.06;
-const minAlpha = 0.01;
+const double minAlpha = 0.01;
 
 double alpha = 0.6;
 double d[maxCluster];
@@ -22,11 +22,13 @@ int pattern[vectors][vecLen] = {{1, 1, 0, 0},
                                 {0, 0, 1, 1}};
 
 void training();
-void computeInput(int vectorNumber);
+void testing();
+void computeWight(int vectorNumber);
 int minimum(double valueA, double valueB);
 int main(){
     cout<<fixed<<setprecision(3)<<endl; //format all the output
     training();
+    testing();
     return 0;
 }
 
@@ -40,20 +42,45 @@ void training(){
         for(int vecNum = 0; vecNum <= (vectors - 1); vecNum++){
 
             //compute input
-            computeInput(vecNum);
+            computeWight(vecNum);
 
             //see which is smaller, d[0] or d[1]?
             dMin = minimum(d[0], d[1]);
-            cout<<"Closest is d("<<dMin<<")"<<endl;
+
+            cout<<"Closest is d("<<dMin +1<<")"<<"\n"<<endl;
 
             //update the weight on the winning unit
             for(int i=0; i<= (vectors - 1); i++){
                 w[dMin][i] = w[dMin][i] + (alpha * (pattern[vecNum][i] - w[dMin][i]));
-                cout<<"w("<<i<<")="<<w[dMin][i];
+                cout<<"w("<<i<<")="<<w[0][i]<<"\n"<<endl;
+                cout<<"w("<<i<<")="<<w[1][i]<<"\n"<<endl;
             }
         }
         //reduce the learning rate.
         alpha = decayRate * alpha;
-    } while(alpha > minAlpha);  //4 iter = 0.096 (minAlpha = 0.504)
+    } while(alpha > 0.504+0.024);  //4 iter = 0.096 (minAlpha = 0.504)
     cout<<"Iteration: "<<iteration<<"\n\n";
+}
+
+void testing(){
+    int dMin;
+
+}
+
+void computeWight(int vectorNumber){
+    d[0] = 0.0;
+    d[1] = 0.0;
+
+    for(int i = 0;i<=(maxCluster - 1); i++){
+        for(int j = 0; j<= (vectors - 1); j++){
+            d[i]+= pow((w[i][j] - pattern[vectorNumber][j]),2);
+        }
+    }
+}
+
+int minimum(double valueA, double valueB){
+    if(valueA < valueB){
+        return 0;
+    }
+    else return 1;
 }
