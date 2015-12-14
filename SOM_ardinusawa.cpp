@@ -7,7 +7,7 @@ using namespace std;
 const int maxCluster = 2; //n
 const int vectors = 4; // m
 const int vecLen = 4;
-const double decayRate = 0.06;
+const double decayRate = 0.96;
 const double minAlpha = 0.01;
 
 double alpha = 0.6;
@@ -37,7 +37,7 @@ void training(){
     int dMin = 0;
 
     do{
-
+        iteration++;
         for(int vecNum = 0; vecNum <= (vectors - 1); vecNum++){
 
             //compute input
@@ -56,11 +56,11 @@ void training(){
 
 
             }
-            iteration++;
+
         }
         //reduce the learning rate.
         alpha = decayRate * alpha;
-    } while(alpha > 0.528);  //4 iter = 0.096 (minAlpha = 0.504)
+    } while(alpha > minAlpha);  //4 iter = 0.096 (minAlpha = 0.528)
     cout<<"Iteration: "<<iteration<<"\n\n";
 }
 
@@ -85,6 +85,16 @@ void testing(){
         cout<<") fits into category " <<dMin<<endl;
 
     }
+    //print last weight
+    cout<<"\n\n";
+    for(int k=0;k<=(maxCluster-1);k++){
+            cout<<"Weight for Node "<<k<<" connection"<<endl;
+            for(int l=0;l<=(vecLen-1);l++){
+                cout<<w[k][l]<<", ";
+            }cout<<"\n\n"<<endl;
+        }
+
+
 
 }
 
